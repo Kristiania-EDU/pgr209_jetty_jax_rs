@@ -5,7 +5,7 @@ import './App.css'
 function App() {
   return (
     <div className="App">
-      <h1>EDU Library</h1>
+      <h1>ErrDdU Liaddwdbsrary</h1>
     </div>
   )
 }
