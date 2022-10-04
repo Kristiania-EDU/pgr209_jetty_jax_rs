@@ -1,9 +1,7 @@
 package no.kristiania.edu;
 
 import org.junit.jupiter.api.Test;
-import java.io.IOException;
 import java.net.HttpURLConnection;
-import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
 import static org.assertj.core.api.Assertions.assertThat;
