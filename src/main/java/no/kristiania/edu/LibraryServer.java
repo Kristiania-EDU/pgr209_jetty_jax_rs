@@ -1,15 +1,18 @@
 package no.kristiania.edu;
 
+import org.eclipse.jetty.server.Server;
+
+import java.net.MalformedURLException;
 import java.net.URL;
 
 public class LibraryServer {
-    private final int port;
+    private final Server server;
 
     public LibraryServer(int port) {
-        this.port = port;
+        this.server = new Server(port);
     }
 
-    public URL getUrl() {
-        return null;
+    public URL getUrl() throws MalformedURLException {
+        return server.getURI().toURL();
     }
 }
