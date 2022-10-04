@@ -10,9 +10,10 @@ import org.eclipse.jetty.servlet.Source;
 import java.io.IOException;
 
 public class ListBooksServlet extends HttpServlet {
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("application/json");
-        resp.getWriter().write("{}");
+        resp.getWriter().println("{}");
     }
 }
