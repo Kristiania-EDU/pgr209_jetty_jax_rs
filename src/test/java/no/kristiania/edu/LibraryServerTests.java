@@ -10,15 +10,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class LibraryServerTests {
     @Test
-    void shouldServeHomePage() throws IOException {
+    void shouldServeHomePage() throws Exception {
         var server = new LibraryServer(0);
-        URL url = server.getUrl();
+        server.start();
 
-        var urlConnection = (HttpURLConnection) url.openConnection();
+        var urlConnection = (HttpURLConnection) server.getUrl().openConnection();
         var responseCode = urlConnection.getResponseCode();
 
         assertThat(responseCode)
-            .as(urlConnection.getResponseMessage() + " for " + url )
+            .as(urlConnection.getResponseMessage() + " for " + urlConnection.getURL() )
             .isEqualTo(200);
 
         assertThat(urlConnection.getInputStream())
