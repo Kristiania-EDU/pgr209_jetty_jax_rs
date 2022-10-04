@@ -1,5 +1,7 @@
 package no.kristiania.edu;
 
+import jakarta.json.bind.JsonbBuilder;
+import jakarta.json.bind.JsonbConfig;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -45,6 +47,9 @@ public class LibraryServerTests {
 
         assertThat(urlConnection.getContentType())
             .isEqualTo("application/json");
+
+
+        System.out.println(urlConnection.getContent());
     }
 
     private HttpURLConnection getUrlConnection(String spec) throws IOException {

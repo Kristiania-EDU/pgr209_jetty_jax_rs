@@ -1,9 +1,9 @@
 # Library server with Jetty and JAX-RS
 
-* [ ] Jetty up and running 
+* [X] Jetty up and running 
   * Jetty is an implementation of the servlet API
 * [ ] Serve static files
-* [ ] JUnit tests with build-in URLConnection
+* [X] JUnit tests with build-in URLConnection
 * [ ] Serve dynamic content with HttpServlet 
   * AssertJ for assertions
 * [ ] React application - vite
