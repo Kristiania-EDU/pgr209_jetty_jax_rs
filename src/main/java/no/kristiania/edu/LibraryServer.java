@@ -1,6 +1,8 @@
 package no.kristiania.edu;
 
+import jakarta.servlet.Servlet;
 import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.util.resource.Resource;
 import org.eclipse.jetty.webapp.WebAppContext;
 import org.slf4j.Logger;
@@ -19,6 +21,7 @@ public class LibraryServer {
         var webContext = new WebAppContext();
         webContext.setContextPath("/");
         webContext.setBaseResource(Resource.newClassPathResource("/webapp"));
+        webContext.addServlet(new ServletHolder(new ListBooksServlet()), "/api/books");
         server.setHandler(webContext);
         logger.info("Library server configured on port {}", port);
     }
