@@ -5,6 +5,7 @@ import jakarta.json.bind.JsonbConfig;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import javax.json.Json;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -18,7 +19,7 @@ public class LibraryServerTests {
 
     @BeforeEach
     void setUp() throws Exception {
-        server = new LibraryServer(0);
+        server = new LibraryServer(8080);
         server.start();
     }
 
@@ -50,6 +51,29 @@ public class LibraryServerTests {
 
 
         System.out.println(urlConnection.getContent());
+    }
+
+    @Test
+    void shouldAddBook() throws IOException {
+        var urlConnection = getUrlConnection("/api/books");
+        urlConnection.setRequestMethod("POST");
+        urlConnection.getOutputStream().write(
+            Json.createObjectBuilder()
+                .add("title", "BookTitle1")
+                .add("author", "bookTitle2")
+                .build()
+                .toString()
+                .getBytes(StandardCharsets.UTF_8)
+        );
+
+        var responseCode = urlConnection.getResponseCode();
+
+        assertThat(responseCode)
+                .as(urlConnection.getResponseMessage() + " for " + urlConnection.getURL() )
+                .isEqualTo(200);
+
+        assertThat(urlConnection.getContentType())
+                .isEqualTo("application/json");
     }
 
     private HttpURLConnection getUrlConnection(String spec) throws IOException {

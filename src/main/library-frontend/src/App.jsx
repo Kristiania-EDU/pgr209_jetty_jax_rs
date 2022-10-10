@@ -1,14 +1,11 @@
 import {useEffect, useState} from 'react'
-import reactLogo from './assets/react.svg'
 import './App.css'
 
 function App() {
   return (
     <div className="App">
-
         <h1>Listen med bøker: </h1>
-
-        <BookList></BookList>
+        <BookList/>
     </div>
   )
 }

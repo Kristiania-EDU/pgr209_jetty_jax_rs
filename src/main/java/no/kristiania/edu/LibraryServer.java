@@ -5,6 +5,7 @@ import org.eclipse.jetty.servlet.DefaultServlet;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.util.resource.Resource;
 import org.eclipse.jetty.webapp.WebAppContext;
+import org.glassfish.jersey.servlet.ServletContainer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,9 +20,14 @@ public class LibraryServer {
 
     public LibraryServer(int port) throws IOException {
         this.server = new Server(port);
+        server.setHandler(configureWebContext());
+        logger.info("Library server configured on port {}", port);
+    }
 
+    private WebAppContext configureWebContext() throws IOException {
         var webContext = new WebAppContext();
         webContext.setContextPath("/");
+
         var resources = Resource.newClassPathResource("/webapp");
 
         // If the app is in development this
@@ -31,10 +37,10 @@ public class LibraryServer {
         // If the app is published the target/classes directory
         // will be used to serve the React app.
         var sourceDirectory = new File(resources.getFile()
-            .getAbsoluteFile()
-            .toString()
-            .replace('\\', '/')
-            .replace("target/classes", "src/main/resources"));
+                .getAbsoluteFile()
+                .toString()
+                .replace('\\', '/')
+                .replace("target/classes", "src/main/resources"));
 
         if(sourceDirectory.isDirectory()) { // This path only available in dev
             webContext.setBaseResource(Resource.newResource(sourceDirectory));
@@ -43,9 +49,11 @@ public class LibraryServer {
             webContext.setBaseResource(resources);
         }
 
-        webContext.addServlet(new ServletHolder(new ListBooksServlet()), "/api/books");
-        server.setHandler(webContext);
-        logger.info("Library server configured on port {}", port);
+        ServletHolder jerseyServlet = webContext.addServlet(ServletContainer.class, "/api/*");
+        jerseyServlet.setInitOrder(0);
+        jerseyServlet.setInitParameter("jersey.config.server.provider.packages", "no.kristiania.edu");
+
+        return webContext;
     }
 
     public URL getUrl() throws MalformedURLException {
