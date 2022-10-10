@@ -26,7 +26,6 @@ public class BookEndpoint {
     @Path("/")
     @POST
     public Response addBook() {
-
-        return Response.ok().build();
+        return Response.ok().header("Content-Type", "application/json").build();
     }
 }
