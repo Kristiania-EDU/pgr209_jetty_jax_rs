@@ -5,7 +5,7 @@ import './App.css'
 function App() {
   return (
     <div className="App">
-      <h1>ErrDdU Liaddwdbsrary</h1>
+      <h1>Oppdatert? Nu</h1>
     </div>
   )
 }

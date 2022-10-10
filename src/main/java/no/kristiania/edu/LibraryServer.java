@@ -1,6 +1,7 @@
 package no.kristiania.edu;
 
 import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.servlet.DefaultServlet;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.util.resource.Resource;
 import org.eclipse.jetty.webapp.WebAppContext;
@@ -22,14 +23,22 @@ public class LibraryServer {
         var webContext = new WebAppContext();
         webContext.setContextPath("/");
         var resources = Resource.newClassPathResource("/webapp");
+
+        // If the app is in development this
+        // folder src/main/resources will exist
+        // This allows us to serve the app from resources folder
+        // And not target/classes.
+        // If the app is published the target/classes directory
+        // will be used to serve the React app.
         var sourceDirectory = new File(resources.getFile()
             .getAbsoluteFile()
             .toString()
             .replace('\\', '/')
             .replace("target/classes", "src/main/resources"));
 
-        if(sourceDirectory.isDirectory()) {
+        if(sourceDirectory.isDirectory()) { // This path only available in dev
             webContext.setBaseResource(Resource.newResource(sourceDirectory));
+            webContext.setInitParameter(DefaultServlet.CONTEXT_INIT + "useFileMappedBuffer", "false");
         } else {
             webContext.setBaseResource(resources);
         }
