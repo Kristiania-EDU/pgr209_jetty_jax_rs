@@ -6,11 +6,18 @@ import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.core.Response;
-
+import javax.json.Json;
+import java.io.StringReader;
+import java.util.ArrayList;
 import java.util.List;
 
 @Path("/books")
 public class BookEndpoint {
+    private static List<Book> books = new ArrayList<Book>()
+    {{
+        new Book("Art of thinking clear", "Rolf Dobelli");
+    }};
+
     @Path("/")
     @GET
     public Response getListOfBooks() {
@@ -25,7 +32,15 @@ public class BookEndpoint {
 
     @Path("/")
     @POST
-    public Response addBook() {
-        return Response.ok().header("Content-Type", "application/json").build();
+    public Response addBook(String body) {
+        var object = Json.createReader(new StringReader(body)).readObject();
+        var book = new Book(
+            object.getString("author"),
+            object.getString("title")
+        );
+
+        books.add(book);
+
+        return Response.ok(book).build();
     }
 }
